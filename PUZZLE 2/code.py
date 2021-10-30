@@ -6,11 +6,6 @@ from adafruit_pn532.i2c import PN532_I2C
 
 class puzzle_1:
     
-    #constructor
-    #def __init__():
-    pn532= None
-        
-    # metodes
     def __init__(self):
         # I2C connection:
         i2c = busio.I2C(board.SCL, board.SDA)
