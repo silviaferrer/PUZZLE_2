@@ -13,22 +13,19 @@ class LabelWindow(Gtk.Window):
         super().__init__(title="rfid_gtk.py")
         self.set_border_width(10)
         #creo el GtkBox
-        self.box = Gtk.Box(spacing=6)
-        self.box.set_homogeneous(False)
-        self.box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL, spacing=6)
+        box = Gtk.Box(orientation = Gtk.Orientation.VERTICAL, spacing=6)
         #afegeixo el GtkBox a la propia finestra (self)
-        self.add(self.box)
-        #per empaquetar widgets en un GtkBox
-        self.box.pack_start(self.box, True, True, 0)
+        self.add(box)
         #creo la GtkLabel
         self.label = Gtk.Label(label="Please login with your university card")
         self.label.set_justify(Gtk.Justification.CENTER)
         self.label.set_size_request(400,100)
-        self.box.pack_start(self.label, True, True, 0)
+        box.pack_start(self.label, True, True, 0)
         #creo el GtkButton
         self.button = Gtk.Button(label="Clear")
         self.button.connect("clicked", self.clicked)
-        self.box.pack_start(self.button, True, True, 0)
+        self.button.set_sensitive(False)
+        box.pack_start(self.button, True, True, 0)
         #creo el Thread per a que la seva target sigui el mètode read_uid de la propia classe i l'inicialitzo
         self.thread = threading.Thread(target=self.read_uid)
         self.thread.setDaemon(True)
@@ -47,6 +44,7 @@ class LabelWindow(Gtk.Window):
         self.label.set_text("Please login with your university card")
         self.label.get_style_context().remove_class("uid_screen")
         self.label.get_style_context().add_class("start")
+        self.button.set_sensitive(False)
         #arrenco de nou el Thread existent
         self.thread = threading.Thread(target=self.read_uid)
         self.thread.start()
@@ -61,5 +59,6 @@ class LabelWindow(Gtk.Window):
         self.label.get_style_context().remove_class("start")
         self.label.get_style_context().add_class("uid_screen")
         self.label.set_text("uid: "+self.uid)
+        self.button.set_sensitive(True)
         
 w = LabelWindow()       
